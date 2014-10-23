@@ -1,0 +1,133 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: AnkaaCMS\n"
+"POT-Creation-Date: 2014-10-23 09:51+0100\n"
+"PO-Revision-Date: 2014-10-23 09:53+0100\n"
+"Last-Translator: \n"
+"Language-Team: Dienstkoning <vertaal@dienstkoning.nl>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.10\n"
+"X-Poedit-Basepath: \\\\avfiles1\\users\\dvanwissen\\Desktop\\GitHub\\ankaaCMS"
+"\\\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: application/core/site.class.php:53
+msgid "Go Back"
+msgstr "Ga Terug"
+
+#: application/core/site.class.php:54
+msgid "Save"
+msgstr "Opslaan"
+
+#: application/core/site.class.php:55
+msgid "Login"
+msgstr "Inloggen"
+
+#: application/core/site.class.php:56 application/core/site.class.php:70
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: application/core/site.class.php:57 application/core/site.class.php:71
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: application/core/site.class.php:58 application/core/site.class.php:72
+msgid "Forgot your password?"
+msgstr "Uw wachtwoord vergeten?"
+
+#: application/core/site.class.php:59
+msgid "Send"
+msgstr "Verstuur"
+
+#: application/core/site.class.php:60
+msgid "Edit"
+msgstr "Bewerken"
+
+#: application/core/site.class.php:61
+msgid "Remove"
+msgstr "Verwijderen"
+
+#: application/core/site.class.php:62
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: application/core/site.class.php:63
+msgid "Add"
+msgstr "Toevoegen"
+
+#: application/core/site.class.php:64
+msgid "New"
+msgstr "Nieuw"
+
+#: application/core/site.class.php:65
+msgid "Create"
+msgstr "Creeër"
+
+#: application/core/site.class.php:66
+msgid "Options"
+msgstr "Opties"
+
+#: application/core/site.class.php:67
+msgid "Settings"
+msgstr "Instellingen"
+
+#: application/core/site.class.php:68
+msgid "Title"
+msgstr "Titel"
+
+#: application/core/site.class.php:69
+msgid "Administration"
+msgstr "Administratie"
+
+#: application/core/site.class.php:73
+msgid "Pages"
+msgstr "Pagina's"
+
+#: application/extensions/auth/auth.ext.php:59
+msgid "user created"
+msgstr "gebruiker aangemaakt"
+
+#: application/extensions/auth/auth.ext.php:61
+msgid "username already exists"
+msgstr "gebruikersnaam bestaat al"
+
+#: modules/article/admin.inc.php:38
+msgid "title"
+msgstr "titel"
+
+#: modules/article/admin.inc.php:39
+msgid "subtitle"
+msgstr "subtitel"
+
+#: modules/article/admin.inc.php:40
+msgid "content"
+msgstr "inhoud"
+
+#: modules/article/admin.inc.php:41
+msgid "Create a new page for this article"
+msgstr "Creeër een nieuwe pagina voor dit artikel"
+
+#: modules/article/admin.inc.php:42
+msgid "Use an existing page:"
+msgstr "Gebruik een bestaande pagina:"
+
+#: modules/auth/index.php:97
+msgid "Article"
+msgstr "Artikel"
+
+#: modules/auth/index.php:98
+msgid "Create an article"
+msgstr "Creeër een artikel"
+
+#: modules/auth/index.php:101
+msgid "Page"
+msgstr "Pagina"
+
+#: modules/auth/index.php:102
+msgid "Create a page"
+msgstr "Creeër een pagina"
