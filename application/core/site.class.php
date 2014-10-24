@@ -71,7 +71,25 @@ class Site extends Main{
         $this->SiteAssign['password'] = _("Password");
         $this->SiteAssign['forgotpassword'] = _("Forgot your password?");
         $this->SiteAssign['pages'] = _("Pages");
-        
+        $this->SiteAssign['module']['add'] = _("Add Module");
+        $this->SiteAssign['referer'] = $_SERVER['HTTP_REFERER'];
+        $this->SiteAssign['pagename'] = $this->getRequest('page');
+        $req = $this->getRequest('request');
+        foreach($req as $key=>$value){
+        			$num=3;
+        			$crumbles[$key] = '';
+        			while($num <= $key){
+        				$crumbles[$key]['link'] = $req[$num];
+        				$crumbles[$key]['url'] .= $req[$num].'/';
+        				$num++;
+        			}
+        		}
+        foreach($crumbles as $key=>$value){
+        	if(empty($crumbles[$key])){
+        		unset($crumbles[$key]);
+        	}
+        }
+		$this->SiteAssign['crumbles'] = $crumbles;
     }
     
     public function __destruct(){
@@ -86,6 +104,7 @@ class Site extends Main{
 				$this->Smarty->assign($name,$value);
 			}
 		}
+
 		$theme = $this->q("	SELECT string 
 							FROM sys_settings AS s
 							LEFT JOIN sys_siteprofile_settings AS k

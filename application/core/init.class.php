@@ -9,6 +9,7 @@ class Init{
     private   $iniLocation = array();
     private   $uri         = '';
     protected $pathDiv     = '';
+    public    $dataFolder  = '';
 
     function __construct(){
         if(php_uname('s') == 'Linux'){

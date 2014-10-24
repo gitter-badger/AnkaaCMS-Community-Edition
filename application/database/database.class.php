@@ -60,9 +60,10 @@ class Database extends Init{
         foreach($d as $k=>$v){
             $q = str_replace($k, '"'.$v.'"', $q);
         }
-        $file = $this->datafolder.'logs/db-debug.log';
+        $file = $this->dataFolder.'logs/db-debug.log';
         $log = file_get_contents($file);
-        file_put_contents($file, "[ ".date()." ][".$backtrace[1]['file']." on line ".$backtrace[1]['line']."] - ".$q."\n");
+        //file_put_contents($file, "[ ".date("d-m-Y H:i:s")." ][".$backtrace[1]['file']." on line ".$backtrace[1]['line']."] - ".$q."\n");
+        file_put_contents($file, $q."\n");
         return $q;
     }
 

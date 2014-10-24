@@ -17,7 +17,6 @@
 
 <body>
 
-  
 <div id="page">
     
 <div id="header">
@@ -38,6 +37,11 @@
 <hr />
 
     <div id="content" class="narrowcolumn">
+    <a href="{$lang}/{$pagename}">{$pagename}</a>
+    {foreach $crumbles as $crumble}
+     > <a href="{$lang}/Admin/{$crumble.url}">{$crumble.link}</a> 
+    {/foreach}
+    <br />
     {foreach $page as $items}
       {include $items.template}
 
@@ -58,8 +62,8 @@
         {foreach $menu as $items}
 
           <li class="page_item">
-            <a href="/{$lang}/{$items.slug}" title="{$items.slug}">
-              {$items.slug}
+            <a href="{$items.slug}" target="{$items.target}" title="{$items.subtitle}">
+              {$items.link}
             </a>
           </li>
         {/foreach}
