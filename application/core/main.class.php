@@ -10,6 +10,7 @@ class Main extends Database{
     Public    $ModuleTemplate;
     Protected $ModuleTemplates;
     public    $template = 'index';
+    Protected $htmlPurify;
 
     function __construct(){
         parent::__construct();
@@ -18,7 +19,11 @@ class Main extends Database{
             $this->Smarty = new Smarty();
             $this->Smarty->setCompileDir(getcwd().'/templates_c');
         }
-                         
+        if($this->loadLib('HTMLPurifier')){
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set('Cache.SerializerPath', $this->dataFolder.'cache');
+            $this->htmlPurify = new HTMLPurifier($config);
+        }                         
     }
 
     function loadExtension($name, $file, $folder){
@@ -84,7 +89,7 @@ class Main extends Database{
         $siteDomain = array(':domain'=>$_SERVER['SERVER_NAME'],':lang'=>$lang);
 		$siteProfile = $this->q("SELECT * FROM sys_siteprofile WHERE domain = :domain AND language = :lang",'ASSOC',$siteDomain);
         switch($type){
-            case "lang";
+            case "lang":
 				
 				foreach($siteProfile as $row){
 					if($lang == $row['language']){
@@ -100,17 +105,27 @@ class Main extends Database{
 				}
                 
                 break;
-            case "page";
+            case "request":
+                return $array;
+                break;
+            case "page":
                 return $page;
                 break;
-            case "action";
+            case "action":
                 return $action;
                 break;
-            case "values";
+            case "values":
                 return $values;
                 break;
-            case "siteprofile";
-                $profileId = $siteProfile[0]['id'];
+            case "siteprofile":
+                if(count($siteProfile) == 0){
+                    $lang = $this->getIni('site');
+                    $siteDomain = array(':domain'=>$_SERVER['SERVER_NAME'],':lang'=>$lang['language']);
+                    $siteProfile = $this->q("SELECT * FROM sys_siteprofile WHERE domain = :domain AND language = :lang",'ASSOC',$siteDomain);
+                    $profileId = $siteProfile[0]['id'];
+                } else {
+                    $profileId = $siteProfile[0]['id'];
+                }
                 return $profileId;
                 break;
         }
@@ -148,6 +163,23 @@ class Main extends Database{
 		$this->ModuleAssign    = $assign;
         //$this->ModuleTemplates = $template;        
 	}
+    
+    public function htmlCleaner($replace='', $type='string'){
+        switch ( $type ){
+            case "array":
+                foreach($replace as $key=>$value){
+                    $replace[$key] = $this->htmlPurify->purify($value);
+                }
+            break;
+            case "string":
+                $replace = $this->htmlPurify->purify($replace);
+            break;
+            default:
+            
+            break;
+        }
+        return $replace;
+    }
     
     public function __destruct(){        
              
