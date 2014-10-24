@@ -26,13 +26,9 @@ tinymce.init({
 });
 </script>
 {/literal}
-{foreach $page as $content}
-    {foreach $content.Article.edit as $Article}
-    <form method="POST" action="" name="edit">
-     <h2 class="editable">{$Article.title}</h2>
-     <h3 class="editable">{$Article.subtitle}</h3>
-     <div class="editable" style="width:100%; min-height:200px">{$Article.content}</div>
-     <input type="submit" value="Opslaan..."/>
+    <form method="POST" action="{$lang}/Admin/Article/edit/{$pages.string}" name="goedit">
+     <h2>{$content.Article['edit'][{$pages.string}].title}</h2>
+     <h3>{$content.Article['edit'][{$pages.string}].subtitle}</h3>
+     <div style="width:100%; min-height:200px">{$content.Article['edit'][{$pages.string}].content}</div>
+     <input type="submit" value="{$edit}"/>
     </form>
-    {/foreach}
-{/foreach}

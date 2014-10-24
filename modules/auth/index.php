@@ -3,6 +3,7 @@
 
 class Auth extends Main{	
     public $AuthTemplate;
+    public $AuthAssign;
     
 	function __construct($attributes=0){
 		parent::__construct();
@@ -64,6 +65,24 @@ class Auth extends Main{
                      $extensionadmin = $extension['name'].'AdminExt';
                      $$extensionadmin = new $extensionadmin($this->function, $this->values);
                      $this->AuthAssign[$this->attributes['location']][$extension['name']] = $$extensionadmin->$extension['name'];
+
+                     if(is_array($$extensionadmin->moduleAssign)){
+                        $last_key = key( array_slice( $$extensionadmin->moduleAssign, -1, 1, TRUE ) );
+                        foreach($$extensionadmin->moduleAssign as $key => $value){
+                            if(!isset($merged)){
+                                $merged = array();
+                            }
+                            //array_combine(keys, values)
+                            $merged = array_replace_recursive($merged, $value['content']);
+                            //$this->AuthAssign[$this->attributes['location']][$value['name']] = $value['content'];
+
+
+                            if($last_key == $key){
+                                $this->AuthAssign[$this->attributes['location']][$value['name']] = $merged;
+                            }
+                            
+                        }
+                     }
                      $output = true;
             	   }  else {
 
