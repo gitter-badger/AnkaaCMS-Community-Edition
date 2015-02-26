@@ -1,0 +1,6 @@
+*.phpproj
+AnkaaCMS.sln
+AnkaaCMS.v12.suo
+AnkaaCMS.phpproj.user
+webdata/compile/07f8755110fe55102bd1347d8d56d9e0b1ab7714.file.debug.tpl.php
+webdata/compile/c32a7a1dd5626891b9ca6f52c25aad32e8098fde.file.index.tpl.php
