@@ -24,10 +24,6 @@ class system{
             }
         }
     }
-    private function setDB(){
-        $dsn = 'mysql:host='.self::settings('database','hostname').';dbname='.self::settings('database','database');
-        $this->db = new PDO($dsn, self::settings('database','username'), self::settings('database','password'));
-    }
     public static function settings($section, $setting){
         $sCWD = $_SERVER['DOCUMENT_ROOT'];
         $aCWD = explode(DIRECTORY_SEPARATOR, $sCWD);

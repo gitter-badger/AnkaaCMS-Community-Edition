@@ -4,6 +4,6 @@
     <title></title>
 </head>
 <body>
-	{$post.welcome}
+	{$site.settings.site_name}
 </body>
 </html>

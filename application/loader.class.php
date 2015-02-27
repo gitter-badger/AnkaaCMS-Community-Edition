@@ -35,7 +35,7 @@ class loader{
         }
     }
     private function loadModules(){
-        $aModules = array('post');
+        $aModules = array('site');
         foreach($aModules as $module){
             $$module = new $module;
             $this->output($module, $$module->output);
