@@ -1,9 +1,12 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <title>{$site.settings.site_name}</title>
 </head>
 <body>
-	{$site.settings.site_name}
+	{foreach $page as $block}
+		{assign "article" $block.content.article}
+		{include $block.content.template}
+	{/foreach}
 </body>
 </html>

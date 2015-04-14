@@ -8,6 +8,7 @@ function autoloader($classname){
 spl_autoload_extensions('.class.php');
 spl_autoload_register('autoloader');
 
+include('./application/extend.php');
 $system = new system();
 $loader = new loader();
 

@@ -13,8 +13,9 @@
 class system{
     
     private $webdata;
+    protected $request;
     private $ini;
-    protected $db;
+    private $db;
     
     public function __construct(){
         $methods = get_class_methods($this);
@@ -50,6 +51,7 @@ class system{
             echo $e->getMessage();
         }
     }
+
     public function __destruct(){
         
     }

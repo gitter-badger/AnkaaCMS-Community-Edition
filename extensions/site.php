@@ -1,12 +1,12 @@
 <?php
 
 /**
- * post short summary.
- *
- * post description.
+ * The Site Module makes sure there is actually a website to view
+ * from the browser.
+ * 
  *
  * @version 1.0
- * @author Dempsey
+ * @author Dempsey van Wissen
  */
 class site{
     
@@ -32,5 +32,7 @@ class site{
         $data['settings_value'] = $value;
         $this->db->insertData('settings', $data);
     }
+    
+    
     
 }

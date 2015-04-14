@@ -5,6 +5,7 @@ class database{
     private $db;
     public $return;
     public $fetchMethod;
+    public $query;
 
     public function __construct(){
         $dsn = 'mysql:host='.system::settings('database','hostname').';dbname='.system::settings('database','database');
@@ -15,12 +16,26 @@ class database{
         $sql = $this->db->prepare($query);
         $sql->setFetchMode = $this->fetchMethod;
         $sql->execute($values);
+        $fullQ = $query;
+        foreach($values as $key=>$var){
+            $fullQ = str_replace($key, '"'.addslashes($var).'"', $fullQ);
+        }
+        $this->query = $fullQ;
         $this->return = $sql->fetchAll();
     }
     
-    public function queryRow($query, $values){
+    public function queryRow($query, $values = array()){
         $sql = $this->db->prepare($query);
-        $sql->execute($values);
+        try{
+            $sql->execute($values);
+        } catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        $fullQ = $query;
+        foreach($values as $key=>$var){
+            $fullQ = str_replace($key, '"'.addslashes($var).'"', $fullQ);
+        }
+        $this->query = $fullQ;
         $this->return = $sql->fetch();
     }
     
