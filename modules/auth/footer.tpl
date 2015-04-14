@@ -1,1 +1,0 @@
-<p><a onclick="history.go(-1)">{$back}</a></p>

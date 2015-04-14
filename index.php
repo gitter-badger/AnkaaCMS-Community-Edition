@@ -1,16 +1,16 @@
 <?php
-$siteDomain = $_SERVER['SERVER_NAME'];
-session_set_cookie_params('36000', '/', $siteDomain, false, false );
-session_start();
+function autoloader($classname){
+    if(file_exists('./application/'.$classname.'.class.php')){
+        include_once('./application/'.$classname.'.class.php');
+        spl_autoload($classname);
+    }
+}
+spl_autoload_extensions('.class.php');
+spl_autoload_register('autoloader');
 
-include_once('./application/core/init.class.php');
-include_once('./application/database/database.class.php');
-include_once('./application/core/main.class.php');
-include_once('./application/core/site.class.php');
-
-
-$Main = new Site();
-
+include('./application/extend.php');
+$system = new system();
+$loader = new loader();
 
 
 ?>
