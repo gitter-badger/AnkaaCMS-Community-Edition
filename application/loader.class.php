@@ -75,6 +75,6 @@ class loader{
         $output->setTemplateDir(system::settings('directory', 'templates'));
         $output->setCompileDir(system::settings('directory', 'compile'));
         $output->setCacheDir(system::settings('directory', 'cache'));
-        $output->display('default\index.tpl');
+        $output->display('acalia\index.tpl');
     }
 }

@@ -8,11 +8,9 @@
  * @version 1.0
  * @author Dempsey
  */
-class menu{
+class menu extends extender{
 
-    public $output;
-    
     public function __construct(){
-        
+    
     }
 }
