@@ -8,8 +8,12 @@ class database{
     public $query;
 
     public function __construct(){
-        $dsn = 'mysql:host='.system::settings('database','hostname').';dbname='.system::settings('database','database');
-        $this->db = new PDO($dsn, system::settings('database','username'), system::settings('database','password'));
+        try{
+            $dsn = 'mysql:host='.system::settings('database','hostname').';dbname='.system::settings('database','database');
+            $this->db = new PDO($dsn, system::settings('database','username'), system::settings('database','password'));
+        } catch(PDOException $e){
+            header('Location: /install/');
+        }
     }
     
     public function queryData($query, $values = array()){
