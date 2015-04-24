@@ -29,17 +29,26 @@ if(!isset($_POST['send'])){
             echo $e->getMessage();
         }
     } catch(PDOException $e){
-        echo $e->getMessage();
-        echo '
-            Please fill in your database settings to import the database file.
-            <form method="POST" action="" name="database">
-                <input type="text" placeholder="User" name="user" />
-                <input type="text" placeholder="Pass" name="pass" />
-                <input type="text" placeholder="Database" name="dbase" />
-                <input type="text" placeholder="Host" name="host" />
-                <input type="submit" value="Install" name="send" />
-            </form>
-            ';
+        try{
+            $dsn = 'mysql:host='.$host.';';
+            $db = new PDO($dsn, $user, $pass);
+            $prep = $db->prepare("CREATE DATABASE :dbase;
+                            GRANT ALL ON :dbase.* TO :user@:host;
+                            FLUSH PRIVILEGES;");
+            $prep->execute(array(':dbase'=>$dbase, ':user'=>$user, ':host'=>$host));
+            } catch(PDOException $e){
+                echo $e->getMessage();
+                echo '
+                    Please fill in your database settings to import the database file.
+                    <form method="POST" action="" name="database">
+                        <input type="text" placeholder="User" name="user" />
+                        <input type="text" placeholder="Pass" name="pass" />
+                        <input type="text" placeholder="Database" name="dbase" />
+                        <input type="text" placeholder="Host" name="host" />
+                        <input type="submit" value="Install" name="send" />
+                    </form>
+                    ';
+            }
     }
 }
 
