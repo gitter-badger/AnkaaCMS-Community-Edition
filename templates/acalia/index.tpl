@@ -18,18 +18,14 @@
     <div id="main_container">
     
         <div id="header">
-            <div id="logo"><a href="index.html"><img src="{$site.settings.site_logo}" alt="" title="" border="0" /></a></div>
-            
-            <a href="make-a-donation.html" class="make_donation"></a>
-            
+            <div id="logo"><a href="/"><img src="{$site.settings.site_logo}" alt="" title="" border="0" /></a></div>
+                        
             <div id="menu">
-                <ul>                                                                                            
-                    <li><a class="current" href="index.html" title="">Home</a></li>
-                    <li><a href="about.html" title="">About Company</a></li>
-                    <li><a href="#" title="">Projects</a></li>
-                    <li><a href="#" title="">Clients</a></li>
-                    <li><a href="#" title="">Testimonials</a></li>
-                    <li><a href="contact.html" title="">Contact</a></li>
+              {debug}
+                <ul>   
+                {foreach $menu.top as $item}                                                                                         
+                    <li><a href="{$item.href}" title="{$item.title}" class="{$item.class}">{$item.name}</a></li>
+                {/foreach}
                 </ul>
             </div>
             

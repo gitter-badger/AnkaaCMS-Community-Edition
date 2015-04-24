@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: 127.0.0.1
--- Gegenereerd op: 14 apr 2015 om 23:20
+-- Gegenereerd op: 24 apr 2015 om 23:21
 -- Serverversie: 5.6.17
 -- PHP-versie: 5.5.12
 
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `extensions` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `class` (`class`),
   KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `extensions`
@@ -88,7 +88,54 @@ CREATE TABLE IF NOT EXISTS `extensions` (
 
 INSERT INTO `extensions` (`id`, `name`, `class`, `description`, `enabled`) VALUES
 (1, 'Site', 'site', 'This extension makes your website work.', 1),
-(2, 'Page', 'page', 'Each website needs a page to show its data. This extension makes sure the right page is to be shown at the right place.', 1);
+(2, 'Page', 'page', 'Each website needs a page to show its data. This extension makes sure the right page is to be shown at the right place.', 1),
+(3, 'Menu', 'menu', 'Create simple recursive menus for your website.', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `menus`
+--
+
+CREATE TABLE IF NOT EXISTS `menus` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `description` text NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `menus`
+--
+
+INSERT INTO `menus` (`id`, `name`, `description`, `status`) VALUES
+(1, 'top', 'Create a top menu for your website.', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `menus_items`
+--
+
+CREATE TABLE IF NOT EXISTS `menus_items` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `parentid` bigint(20) NOT NULL,
+  `menuid` int(11) NOT NULL,
+  `href` varchar(500) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `title` varchar(250) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `menus_items`
+--
+
+INSERT INTO `menus_items` (`id`, `parentid`, `menuid`, `href`, `name`, `title`, `status`) VALUES
+(1, 0, 1, 'index.php/Home', 'Home', 'Homepage', 1);
 
 -- --------------------------------------------------------
 
@@ -195,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `settings_name` varchar(250) NOT NULL,
   `settings_value` varchar(500) NOT NULL,
   PRIMARY KEY (`settings_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=58 ;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `settings`
@@ -209,7 +256,44 @@ INSERT INTO `settings` (`settings_id`, `settings_name`, `settings_value`) VALUES
 (5, 'error_display', 'false'),
 (6, 'error_level', 'debug'),
 (7, 'error_logging', 'true'),
-(8, 'error_logmethod', 'file');
+(8, 'error_logmethod', 'file'),
+(57, 'site_logo', '/images/logo.gif');
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `widgets`
+--
+
+CREATE TABLE IF NOT EXISTS `widgets` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `folder` varchar(256) NOT NULL,
+  `description` text NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `widgets`
+--
+
+INSERT INTO `widgets` (`id`, `name`, `folder`, `description`, `status`) VALUES
+(1, 'Header imageSlider', 'header_imageSlider', 'With Header imageSlider you can create an image slider in your page header', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `widget_header_imageslider`
+--
+
+CREATE TABLE IF NOT EXISTS `widget_header_imageslider` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `setting` int(250) NOT NULL,
+  `value` varchar(500) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
