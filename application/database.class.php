@@ -9,10 +9,11 @@ class database{
 
     public function __construct(){
         try{
-            $dsn = 'mysql:host='.system::settings('database','hostname').';dbname='.system::settings('database','database');
+            $dsn = 'mysql:host='.system::settings('database','hostname').';port='.system::settings('database','port').';dbname='.system::settings('database','database');
             $this->db = new PDO($dsn, system::settings('database','username'), system::settings('database','password'));
         } catch(PDOException $e){
-            header('Location: /install/');
+            echo $e->getMessage();
+            //header('Location: /install/');
         }
     }
     
