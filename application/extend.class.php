@@ -16,8 +16,8 @@ class extender{
     public function __construct(){
         $this->cwd = $_SERVER['DOCUMENT_ROOT'];
         $this->db = new database();
-        if(isset($_SERVER['PATH_INFO'])){
-            $path       = explode('/', $_SERVER['PATH_INFO']);
+        if(isset($_SERVER['REDIRECT_URL'])){
+            $path       = explode('/', $_SERVER['REDIRECT_URL']);
         } else {
             $path       = array('');
         }

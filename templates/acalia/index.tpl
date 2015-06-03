@@ -18,8 +18,7 @@
     <div id="main_container">
     
         <div id="header">
-            <div id="logo"><a href="/"><img src="{$site.settings.site_logo}" alt="" title="" border="0" /></a></div>
-                        
+            <div id="logo"><a href="/"><img src="{$site.settings.site_logo}" alt="" title="" border="0" /></a></div>      
             <div id="menu">
               {debug}
                 <ul>   
@@ -34,61 +33,7 @@
         
         
         <div class="middle_banner">               
-           
-<div class="featured_slider">
-      	<!-- begin: sliding featured banner -->
-         <div id="featured_border" class="jcarousel-container">
-            <div id="featured_wrapper" class="jcarousel-clip">
-               <ul id="featured_images" class="jcarousel-list">
-                  <li><img src="templates/acalia/images/slider_photo.jpg" width="965" height="280" alt="" /></li>
-                  <li><img src="templates/acalia/images/slider_photo2.jpg" width="965" height="280" alt="" /></li>
-                  <li><img src="templates/acalia/images/slider_photo3.jpg" width="965" height="280" alt="" /></li>
-                  <li><img src="templates/acalia/images/slider_photo2.jpg" width="965" height="280" alt="" /></li>
-               </ul>
-            </div>
-            <div id="featured_positioner_desc" class="jcarousel-container">
-               <div id="featured_wrapper_desc" class="jcarousel-clip">
-                  <ul id="featured_desc" class="jcarousel-list">                 
-                     <li>
-                        <div>
-                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                           </p>
-                        </div>
-                     </li> 
-                     <li>
-                        <div>
-                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                           </p>
-                        </div>
-                     </li> 
-                     <li>
-                        <div>
-                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                           </p>
-                        </div>
-                     </li>  
-                     <li>
-                        <div>
-                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                           </p>
-                        </div>
-                     </li> 
-                  </ul>
-               </div>
-
-            </div>
-            <ul id="featured_buttons" class="clear_fix">
-               <li>1</li>
-               <li>2</li>
-               <li>3</li>
-               <li>4</li>
-            </ul>
-         </div>
-         <!-- end: sliding featured banner -->
-</div>
-          
-        
-        
+          {include $header_imageSlider.template}
         </div><!---------------------------------end of middle banner-------------------------------->
         
         
