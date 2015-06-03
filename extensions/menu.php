@@ -14,12 +14,12 @@ class menu extends extender{
     public function __construct(){
         parent::__construct();
         $top[0] = array(
-                        'href'  => '/Home',
+                        'href'  => '/page'.'/Home',
                         'title' => 'Homepage',
                         'name'  => 'Home',
                         );
         $top[1] = array(
-                        'href'  => '/About',
+                        'href'  => '/page'.'/About',
                         'title' => 'About Us',
                         'name'  => 'About',
                         );
@@ -31,6 +31,7 @@ class menu extends extender{
             }
         }
         $this->output['top'] = $top;
+        $this->output['footer'] = $top;
     }
 
     private function getCurrentItem($item){

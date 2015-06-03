@@ -4,7 +4,7 @@ class database{
     
     private $db;
     public $return;
-    public $fetchMethod;
+    public $fetchMethod = PDO::FETCH_ASSOC;
     public $query;
 
     public function __construct(){
@@ -19,14 +19,13 @@ class database{
     
     public function queryData($query, $values = array()){
         $sql = $this->db->prepare($query);
-        $sql->setFetchMode = $this->fetchMethod;
         $sql->execute($values);
         $fullQ = $query;
         foreach($values as $key=>$var){
             $fullQ = str_replace($key, '"'.addslashes($var).'"', $fullQ);
         }
         $this->query = $fullQ;
-        $this->return = $sql->fetchAll();
+        $this->return = $sql->fetchAll($this->fetchMethod);
     }
     
     public function queryRow($query, $values = array()){
@@ -41,7 +40,7 @@ class database{
             $fullQ = str_replace($key, '"'.addslashes($var).'"', $fullQ);
         }
         $this->query = $fullQ;
-        $this->return = $sql->fetch();
+        $this->return = $sql->fetch($this->fetchMethod);
     }
     
     public function insertData($table, $data){

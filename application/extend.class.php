@@ -16,6 +16,7 @@ class extender{
     public function __construct(){
         $this->cwd = $_SERVER['DOCUMENT_ROOT'];
         $this->db = new database();
+        $this->db->fetchMethod = PDO::FETCH_ASSOC;
         if(isset($_SERVER['REDIRECT_URL'])){
             $path       = explode('/', $_SERVER['REDIRECT_URL']);
         } else {

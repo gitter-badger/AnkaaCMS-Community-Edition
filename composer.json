@@ -1,0 +1,12 @@
+{
+	"name"			: "DienstKoning/AnkaaCMS-Community-Edition",
+	"Description"	: "Easy to use out of the box multilingual CMS. This is the open source community edition of an extended professional version with support",
+	"config"		: {
+						"vendor-dir"			:	"libraries"
+						},
+	"require"		: {
+						"php"					:	">=5.4.0",
+						"phpmailer/phpmailer"	: 	"~5.2",
+						"smarty/smarty"			:	"~3.1"
+						}
+}
