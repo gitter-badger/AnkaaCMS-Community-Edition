@@ -39,7 +39,7 @@ class article extends extender{
     
     public function getTemplate($id){
         $this->db->queryRow('SELECT file FROM article_templates WHERE id = :id', array(':id'=>$id));
-        $file = $this->cwd.'/modules/article/'.$this->db->return['file'];
+        $file = system::settings('directory', 'templates').'acalia'.DIRECTORY_SEPARATOR.'article'.DIRECTORY_SEPARATOR.$this->db->return['file'];
         return $file;
     }
     

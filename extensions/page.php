@@ -23,8 +23,9 @@ class page extends extender{
     public function loadPage(){
         $blocks = $this->getBlocks();
         foreach($blocks as $block){
-            $this->getContent($block['location']);
+            $this->getContent($block['id'], $block['location']);
         }
+
     }
     
     public function requestMethod(){
@@ -37,35 +38,32 @@ class page extends extender{
         return $this->db->return;
     }
     
-    private function getContent($location){
+    private function getContent($location, $block){
         if(!empty($this->request)){
             $aRequest = explode('/', $this->request);
-            if(is_array($aRequest)){
-                $this->db->queryData('SELECT * FROM pages_content c INNER JOIN pages p ON p.id = c.pageid WHERE p.title = :title',array(':title'=>'Home'));
+            if(is_array($aRequest) && count($aRequest) > 1){
+                $this->db->queryData('SELECT * FROM pages_content c INNER JOIN pages p ON p.id = c.pageid WHERE p.title = :title AND c.blockid = :blockid',array(':title'=>$aRequest[1], ':blockid'=>$location));
             } else {
-                $this->db->queryData('SELECT * FROM pages_content c INNER JOIN pages p ON p.id = c.pageid WHERE p.title = :title)',array(':title'=>$aRequest));
+                $this->db->queryData('SELECT * FROM pages_content c INNER JOIN pages p ON p.id = c.pageid WHERE p.id = :id and c.blockid = :blockid)',array(':id'=>1, ':blockid'=>$location));
             }
             $contents = $this->db->return;
         } else {
-            $this->db->queryData('SELECT * FROM pages_content c INNER JOIN pages p ON p.id = c.pageid WHERE p.default = 1 LIMIT 1');
+            $this->db->queryData('SELECT * FROM pages_content c INNER JOIN pages p ON p.id = c.pageid WHERE p.default = 1 and c.blockid = :blockid LIMIT 1', array(':blockid'=>$location));
             $contents = $this->db->return;
         }
-        foreach($this->modules as $module){
-            foreach($contents as $content){
-                $return['title'] = $content['title'];
-                $return['subtitle'] = $content['subtitle'];
-                $return['author']   = $content['author'];
-                foreach($this->modules as $module){
-                    if($module['id'] == $content['module']){
-                        $$module['name'] = new $module['name']($content['data']);
-                        $return['content'] = $$module['name']->output;
-                    }
+        foreach($contents as $content){
+            $return['title'] = $content['title'];
+            $return['subtitle'] = $content['subtitle'];
+            $return['author']   = $content['author'];
+            foreach($this->modules as $module){
+                if($module['id'] == $content['module']){
+                    $$module['name'] = new $module['name']($content['data']);
+                    $return['content'] = $$module['name']->output;
+                    $this->output[$block] = $return;
                 }
-                $output[$location] = $return;
             }
-            $this->output = $output;
+            
         }
-        
     }
     
     private function getModules(){
