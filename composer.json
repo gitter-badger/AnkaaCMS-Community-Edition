@@ -5,8 +5,9 @@
 						"vendor-dir"			:	"libraries"
 						},
 	"require"		: {
-						"php"					:	">=5.4.0",
+						"php"					:	">=5.4.17",
 						"phpmailer/phpmailer"	: 	"~5.2",
-						"smarty/smarty"			:	"~3.1"
+						"smarty/smarty"			:	"~3.1",
+						"monolog/monolog"		:	">=1.13.1"
 						}
 }
