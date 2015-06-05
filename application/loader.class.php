@@ -8,9 +8,12 @@
  * @version 1.0
  * @author DienstKoning
  */
+
 class loader{
-    private $cwd;
+    protected $cwd;
     public $outputAssign = array();
+    private $templatename = 'default';
+    public $settings;
     
     public function __construct(){
         try{
@@ -116,64 +119,10 @@ class loader{
         }
     }
 
-    public function outputType(){
-        switch($_SERVER['HTTP_ACCEPT']){
-            case "application/json":
-                return 'json';
-                break;
-            case "application/xml":
-                return 'xml';
-                break;
-            default:
-                return 'display';
-                break;
-
-        }
-    }
     public function output($key, $value){
         $this->outputAssign[$key] = $value;
     }
     public function __destruct(){
-        if(isset($_SERVER['REDIRECT_URL'])){
-            $path       = explode('/', $_SERVER['REDIRECT_URL']);
-        } else {
-            $path       = array('');
-        }
-        unset($path[0]);
-        $request    = implode('/',$path);
-        $aRequest   = explode('/', $request);
-        $output = new Smarty();
-        foreach($this->outputAssign as $key=>$value){
-            $output->assign($key, $value);
-        }
-        $output->setTemplateDir(system::settings('directory', 'templates'));
-        $output->setCompileDir(system::settings('directory', 'compile'));
-        $output->setCacheDir(system::settings('directory', 'cache'));
-        switch($this->outputType()){
-            case "display":
-                $output->display('a-vision\index.tpl');
-                break;
-            case "json":
-                header('Cache-Control: no-cache, must-revalidate');
-                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-                header('Content-type: application/json');
-                echo json_encode($this->outputAssign);
-                break;
-            case "xml":
-                if(isset($aRequest[0]) && !empty($aRequest[0])){
-                    $array = $this->outputAssign[$aRequest[0]];
-                } else {
-                    $array = $this->outputAssign;
-                }
-                header('Content-Type: text/xml');
-                $xml = new SimpleXMLElement("<?xml version=\"1.0\"?><response></response>");
-                $this->array_to_xml($array,$xml);
-                print $xml->asXML();
-                break;
-            case "array":
-                print_r($this->outputAssign);
-                break;
-        }
-        
+
     }
 }
