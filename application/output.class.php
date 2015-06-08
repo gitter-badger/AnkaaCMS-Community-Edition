@@ -6,6 +6,9 @@ class output extends loader{
   public function __construct(){
     parent::__construct();
     $this->db = new database;
+    if(empty(system::request()[0])){
+      header('Location: /'.output::getSiteSettings('default_module_name').'/'.output::getSiteSettings('default_module_value'));
+    }
   }
 
 

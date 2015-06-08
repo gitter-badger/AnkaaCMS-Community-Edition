@@ -36,10 +36,15 @@ class menu extends extender{
 
     private function getCurrentItem($item){
         $aRequest = explode('/', $this->request);
-        if($item == $aRequest[0]){
-            return TRUE;
+        if(count($aRequest) > 1){
+            if($item == $aRequest[1]){
+                return TRUE;
+            } else {
+                return FALSE;
+            }
         } else {
             return FALSE;
         }
+        
     }
 }

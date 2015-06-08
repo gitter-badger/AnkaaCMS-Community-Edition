@@ -8,6 +8,7 @@
 						"php"					:	">=5.4.17",
 						"phpmailer/phpmailer"	: 	"~5.2",
 						"smarty/smarty"			:	"~3.1",
-						"monolog/monolog"		:	">=1.13.1"
+						"monolog/monolog"		:	">=1.13.1",
+						"twbs/bootstrap"		:	">=3.3.4"
 						}
 }

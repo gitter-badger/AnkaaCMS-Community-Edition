@@ -18,13 +18,12 @@ class loader{
     public function __construct(){
         try{
             $this->cwd = $_SERVER['DOCUMENT_ROOT'];
-          //  spl_autoload_register(array($this, 'libLoader'), true);
             require 'libraries'.DIRECTORY_SEPARATOR.'autoload.php';
             spl_autoload_register(array($this, 'extLoader'), true);
             spl_autoload_register(array($this, 'widgetLoader'), true);
             $this->loadExtensions();
             $this->loadWidgets();
-        } catch(Exception $e){
+        } catch(error $e){
             echo $e->getMessage();
         }
     }
@@ -122,6 +121,7 @@ class loader{
     public function output($key, $value){
         $this->outputAssign[$key] = $value;
     }
+
     public function __destruct(){
 
     }

@@ -8,12 +8,12 @@ class output_html{
     $output->setTemplateDir(system::settings('directory', 'templates'));
     $output->setCompileDir(system::settings('directory', 'compile'));
     $output->setCacheDir(system::settings('directory', 'cache'));
-    $templatename = output::getSiteSettings('site_template');
+    $request = explode('/', $_SERVER['REQUEST_URI']);
+    $templatename = output::getSiteSettings($request[1].'_template');
     foreach($data as $key=>$value){
-            $output->assign($key, $value);
-        }
+        $output->assign($key, $value);
+    }
     $this->return = $output->$show($templatename.DIRECTORY_SEPARATOR.'index.tpl');
-
   }
 }
 
