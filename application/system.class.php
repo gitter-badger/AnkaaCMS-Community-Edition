@@ -52,6 +52,17 @@ class system{
         }
     }
 
+    public static function request(){
+        $request = explode('/',$_SERVER['REQUEST_URI']);
+        unset($request[0]);
+        $implode = implode('/', $request);
+        return explode('/', $implode);
+    }
+
+    private function loadAdmin(){
+           new admin();
+    }
+
     public function __destruct(){
         
     }

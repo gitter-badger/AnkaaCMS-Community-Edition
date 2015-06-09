@@ -17,7 +17,9 @@ class page extends extender{
         $this->db = new database();
         spl_autoload_register(array($this, 'modLoader'), true);
         $this->modules = $this->getModules();
-        $this->loadPage();
+        if(explode('/',$this->request)[0] == 'page'){
+            $this->loadPage();
+        }
     }
     
     public function loadPage(){

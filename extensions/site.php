@@ -10,8 +10,10 @@
  */
 class site{
     
-    public $output;
     
+    public $output;
+
+
     public function __construct(){
         $this->db = new database();
         $this->getSettings();
@@ -31,6 +33,14 @@ class site{
         $data['settings_name']  = $name;
         $data['settings_value'] = $value;
         $this->db->insertData('settings', $data);
+    }
+
+    public function delSettings($name, $value){
+
+    }
+
+    public function updateSettings($name, $newvalue){
+
     }
     
     

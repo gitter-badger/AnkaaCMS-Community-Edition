@@ -11,7 +11,7 @@ spl_autoload_register('autoloader');
 
 include('./application/extend.class.php');
 $system = new system();
-$loader = new loader();
+$loader = new output();
 
 
 ?>
