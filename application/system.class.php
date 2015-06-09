@@ -20,13 +20,18 @@ class system{
     public function __construct(){
         $methods = get_class_methods($this);
         foreach($methods as $method){
-            if($method != '__construct' and $method != '__destruct' and $method != 'settings'){
-                $this->$method();
+            if( $method != '__construct' and 
+                $method != '__destruct' and
+                $method != 'settings' and
+                $method != 'getSession' and
+                $method != 'setSession' and
+                $method != 'server'){
+                    $this->$method();
             }
         }
     }
     public static function settings($section, $setting){
-        $sCWD = $_SERVER['DOCUMENT_ROOT'];
+        $sCWD = system::server('DOCUMENT_ROOT');
         $aCWD = explode(DIRECTORY_SEPARATOR, $sCWD);
         for($i=0;$i<count($aCWD);$i++){
             $path = implode($aCWD, DIRECTORY_SEPARATOR);
@@ -53,7 +58,7 @@ class system{
     }
 
     public static function request(){
-        $request = explode('/',$_SERVER['REQUEST_URI']);
+        $request = explode('/',system::server('REQUEST_URI'));
         unset($request[0]);
         $implode = implode('/', $request);
         return explode('/', $implode);
@@ -62,6 +67,27 @@ class system{
     private function loadAdmin(){
            new admin();
     }
+
+    public static function getSession($name){
+        if(isset($_SESSION[$name])){
+            return $_SESSION[$name];
+        } else {
+            return FALSE;
+        }
+    }
+    public static function setSession($name, $value=0){
+        $_SESSION[$name] = $value;
+        return $_SESSION[$name];
+    }
+
+    public static function server($name){
+        if(isset($_SERVER[$name])){
+            return $_SERVER[$name];
+        } else {
+            return FALSE;
+        }
+    }
+
 
     public function __destruct(){
         

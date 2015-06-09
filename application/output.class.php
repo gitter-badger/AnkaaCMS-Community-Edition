@@ -30,7 +30,7 @@ class output extends loader{
 
   public function loadType(){
     foreach($this->supportedOutput() as $supported){
-      if(strpos($_SERVER['HTTP_ACCEPT'], $supported['type']) !== FALSE){
+      if(strpos(system::server('HTTP_ACCEPT'), $supported['type']) !== FALSE){
         $http_accept = $supported['extension_class'];
       } else{
         $http_accept = 'html';
@@ -46,8 +46,8 @@ class output extends loader{
   }
 
   public function __destruct(){
-        if(isset($_SERVER['REDIRECT_URL'])){
-            $path       = explode('/', $_SERVER['REDIRECT_URL']);
+        if(system::server('REDIRECT_URL') !== FALSE){
+            $path       = explode('/', system::server('REDIRECT_URL'));
         } else {
             $path       = array('');
         }
