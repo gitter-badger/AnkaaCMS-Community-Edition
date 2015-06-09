@@ -43,8 +43,8 @@ class loader{
     private function loadExtensions(){
         $aExtensions = $this->getExtensions('enabled');
         foreach($aExtensions as $data){
-            $$data['class'] = new $data['class'];
-            $this->output($data['class'], $$data['class']->output);
+            $this->$data['class'] = new $data['class'];
+            $this->output($data['class'], $this->$data['class']->output);
         }
     }
 

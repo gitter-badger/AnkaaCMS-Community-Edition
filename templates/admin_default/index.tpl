@@ -14,6 +14,10 @@
 	.page {
 	  padding: 40px 15px;
 	}
+  .form-signin{
+    margin: 0 auto;
+    max-width: 400px;
+  }
     </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,6 +28,10 @@
 
 <body>
 	{debug}
+
+
+
+  {if $user.loggedin === TRUE}
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -53,7 +61,9 @@
       </div>
 
     </div><!-- /.container -->
-
+  {else}
+    {include './login.tpl'}
+  {/if}
 
 
 
