@@ -45,22 +45,17 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="">Home</a></li>
-            <li><a href="about">About</a></li>
-            <li><a href="contact">Contact</a></li>
+            {foreach $adminpanel.menu.top as $item}
+              <li class="{if $item.current == TRUE}active{/if}"><a href="{$site.settings.site_url}admin/{$item.class}">{$item.name}</a></li>
+            {/foreach}
+          </ul>
+          <ul id="navbar" class="nav navbar-nav navbar-right">
+            <li><a href="{$site.settings.site_url}user/logout">Log out</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
-    <div class="container">
-
-      <div class="page">
-        <h1></h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-      </div>
-
-    </div><!-- /.container -->
+    {include $adminpanel.current_template}
   {else}
     {include './login.tpl'}
   {/if}

@@ -25,4 +25,8 @@ class extender{
         unset($path[0]);
         $this->request    = implode('/',$path);
     }
+
+    public function hasRights(){
+        return TRUE;
+    }
 }

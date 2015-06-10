@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 function autoloader($classname){
     if(file_exists('./application/'.$classname.'.class.php')){
         include_once('./application/'.$classname.'.class.php');
