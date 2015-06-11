@@ -1,13 +1,12 @@
 <?php
 
-
 class output extends loader{
   
   public function __construct(){
     parent::__construct();
     $this->db = new database;
     if(empty(system::request()[0])){
-      header('Location: /'.output::getSiteSettings('default_module_name').'/'.output::getSiteSettings('default_module_value'));
+      system::redirectDefault();
     }
   }
 
@@ -24,9 +23,21 @@ class output extends loader{
         include_once($this->cwd.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'output_'.$classname.'.php');
     }
     $class = 'output_'.$classname;
+    $this->getMessage();
     $this->output = new $class($this->outputAssign);
   }
   
+  public function getMessage(){
+    $this->output['message'] = array();
+    $this->outputAssign['request'] = implode('/', system::request());
+    foreach($this->outputAssign as $output){
+      if(is_array($output)){
+        if(array_key_exists('message', $output)){
+          $this->outputAssign['messages'][] = $output['message'];
+        }
+      }
+    }
+  }
 
   public function loadType(){
     foreach($this->supportedOutput() as $supported){

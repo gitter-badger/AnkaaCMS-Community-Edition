@@ -1,6 +1,5 @@
 <?php
 
-
 class adminpanel extends extender{
 	
 	public $output;

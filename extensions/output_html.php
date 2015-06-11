@@ -13,7 +13,12 @@ class output_html{
     foreach($data as $key=>$value){
         $output->assign($key, $value);
     }
-    $this->return = $output->$show($templatename.DIRECTORY_SEPARATOR.'index.tpl');
+    if(file_exists(system::settings('directory', 'templates').DIRECTORY_SEPARATOR.output::getSiteSettings($request[1].'_template').DIRECTORY_SEPARATOR.'index.tpl')){
+      $this->return = $output->$show($templatename.DIRECTORY_SEPARATOR.'index.tpl');
+    } else {
+      system::redirectDefault();
+    }
+    
   }
 }
 

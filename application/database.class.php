@@ -76,17 +76,18 @@ class database{
         $query .= ' WHERE ';
         $searches = count($search);
         $i = 0;
-        foreach($data as $search=>$value){
+        foreach($search as $searching=>$val){
             $i++;
-            $query .= $column.'=:search_'.$column;
+            $query .= $searching.'=:search_'.$searching;
             if($i < $searches){
                 $query .= ' AND ';
             }
-            $input[':search_'.$column] = $value;
+            $input[':search_'.$searching] = $val;
         }
         $sql = $this->db->prepare($query);
+
         try{
-            $sql->execute($input);
+           $sql->execute($input);
         } catch(PDOException $e){
             echo $e->getMessage();
         } 

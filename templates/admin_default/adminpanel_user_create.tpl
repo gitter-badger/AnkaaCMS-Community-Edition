@@ -1,1 +1,1 @@
-hoi
+{include './adminpanel_user_form.tpl'}

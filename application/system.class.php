@@ -20,16 +20,16 @@ class system{
     public function __construct(){
         $methods = get_class_methods($this);
         foreach($methods as $method){
-            if( $method != '__construct' and 
-                $method != '__destruct' and
-                $method != 'settings' and
-                $method != 'getSession' and
-                $method != 'setSession' and
-                $method != 'server'){
-                    $this->$method();
+            if( $method == 'request'){
+                $this->$method();
             }
         }
     }
+    
+    public static function redirectDefault(){
+        header('Location: /'.output::getSiteSettings('default_module_name').'/'.output::getSiteSettings('default_module_value'));
+    }
+
     public static function settings($section, $setting){
         $sCWD = system::server('DOCUMENT_ROOT');
         $aCWD = explode(DIRECTORY_SEPARATOR, $sCWD);
@@ -85,6 +85,15 @@ class system{
             return $_SERVER[$name];
         } else {
             return FALSE;
+        }
+    }
+
+    public static function gender($int){
+        if($int == 1){
+            return _('Male');
+        }
+        if($int == 0){
+            return _('Female');
         }
     }
 
