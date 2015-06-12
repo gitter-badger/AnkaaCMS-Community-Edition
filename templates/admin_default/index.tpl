@@ -29,8 +29,6 @@
 <body>
 	{debug}
 
-
-
   {if $user.loggedin === TRUE}
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -45,22 +43,40 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="">Home</a></li>
-            <li><a href="about">About</a></li>
-            <li><a href="contact">Contact</a></li>
+            {foreach $adminpanel.menu.top as $item}
+              <li class="{if $item.current == TRUE}active{/if}"><a href="{$site.settings.site_url}admin/{$item.class}">{$item.name}</a></li>
+            {/foreach}
+          </ul>
+          <ul id="navbar" class="nav navbar-nav navbar-right">
+            <li><a href="{$site.settings.site_url}user/logout">Log out</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
-    <div class="container">
-
-      <div class="page">
-        <h1></h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-      </div>
-
-    </div><!-- /.container -->
+    {foreach $messages as $message}
+      {if isset($message.text)}
+        {if $message.type == 'error'}
+          <div class="alert alert-danger fade in">
+            <a onClick="$().alert('close')" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong>
+          {elseif $message.type == 'warning'}
+          <div class="alert alert-warning fade in">
+            <a href="{$site.settings.site_url}{$request}" class="close" data-dismiss="alert">&times;</a>
+            <strong>Warning!</strong>
+          {elseif $message.type == 'success'}
+          <div class="alert alert-success fade in">
+            <a href="{$site.settings.site_url}{$request}" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong>
+          {elseif $message.type == 'note'}
+          <div class="alert alert-note fade in">
+            <a href="{$site.settings.site_url}{$request}" class="close" data-dismiss="alert">&times;</a>
+            <strong>Note!</strong>
+        {/if}
+            {$message.text}
+          </div>
+      {/if}
+    {/foreach}
+    {include $adminpanel.current_template}
   {else}
     {include './login.tpl'}
   {/if}
