@@ -1,4 +1,4 @@
-{foreach $user.form as $form}
+{foreach $forms as $form}
 <form class="{$form.class}" method="{$form.method}" name="{$form.name}" action="{$form.action}">
   {foreach $form.fields as $field}
     {if $field.type == 'checkbox'}

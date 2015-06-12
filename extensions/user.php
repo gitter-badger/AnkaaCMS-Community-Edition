@@ -9,13 +9,22 @@ class user extends extender{
 	public function __construct(){
 		parent::__construct();
 		$this->loggedin = FALSE;
+		if(isset(system::request()[2])){
+			if(system::request()[2] == 'activate'){
+				$this->logout(0);
+				if(isset(system::request()[3])){
+					$this->activate(system::request()[3]);
+				}
+				
+			}
+		}
 		$this->output = array('login'=>array(), 'message'=>'', 'loggedin'=>$this->loggedin);
 		$this->checkUser();
 		if($this->loggedin === FALSE){
-			if(isset($_POST['username'])){
+			if(isset($_POST['action']) && $_POST['action'] === 'loginuser'){
 				$this->loggedin = $this->login();
 			} else {
-				$this->output['form']['user-form-login'] = $this->userForm('user-form-login');
+				$this->output['forms']['user-form-login'] = $this->createForm('user-form-login');
 			}
 		}
 		if($this->loggedin === TRUE){
@@ -34,7 +43,7 @@ class user extends extender{
 				}
 			}
 		} else {
-			$this->output['form']['user-form-login'] = $this->userForm('user-form-login');
+			$this->output['forms']['user-form-login'] = $this->createForm('user-form-login');
 		}
 		$this->output['loggedin'] = $this->loggedin;
 		if(isset(system::request()[1])){
@@ -103,27 +112,37 @@ class user extends extender{
 	}
 
 	private function getSalt($username){
-		$this->db->queryRow('SELECT value FROM user_secval v INNER JOIN user u ON u.id = v.uid WHERE u.username = :username', array(':username'=>$username));
-		if(empty($this->db->return['value'])){
+		$this->db->queryRow('SELECT salt FROM user_secval v INNER JOIN user u ON u.id = v.user_id WHERE u.username = :username', array(':username'=>$username));
+		if(empty($this->db->return['salt'])){
 			return 0;
 		} else {
-			return $this->db->return['value'];
+			return $this->db->return['salt'];
 		}
+	}
+
+	private function password($pass, $salt){
+		return crypt($pass, '$2y$10$'.$salt);
 	}
 
 	private function login(){
 		$username = $_POST['username'];
 		$salt = $this->getSalt($username);
-		$password = crypt($_POST['password'], '$2y$10$'.$salt);
-		$this->db->queryRow('SELECT count(*) as row, id FROM user WHERE username = :username AND password = :password', array(':username'=>$username, ':password'=>$password));
+		$password = $this->password($_POST['password'], $salt);
+		$this->db->queryRow('SELECT count(*) as row, id, status FROM user WHERE username = :username AND password = :password', array(':username'=>$username, ':password'=>$password));
 		if($this->db->return['row'] == 1){
 			$return = $this->db->return;
-			$data['user_id'] = $return['id'];
-			$data['hash'] = hash('sha256', time().rand(99999,99999999999999).md5(rand(99999,99999999999999)));
-			$_SESSION['user'] = $data['hash'];
-			$data['ip']   = system::server('REMOTE_ADDR');
-			$this->db->insertData('user_session', $data);
-			return TRUE;
+			if($return['status'] == 1){
+				$data['user_id'] = $return['id'];
+				$data['hash'] = hash('sha256', time().rand(99999,99999999999999).md5(rand(99999,99999999999999)));
+				$_SESSION['user'] = $data['hash'];
+				$data['ip']   = system::server('REMOTE_ADDR');
+				$this->db->insertData('user_session', $data);
+				return TRUE;
+			} else {
+				$this->output['message']['type'] = 'error';
+				$this->output['message']['text'] = _('Account is disabled.');
+				return FALSE;
+			}
 		} else {
 			$this->output['message']['type'] = 'error';
 			$this->output['message']['text'] = _('Username or password incorrect.');
@@ -131,9 +150,14 @@ class user extends extender{
 		}
 	}
 
-	private function logout(){
+	private function logout($set=1){
 		$this->delSession();
-		header('Location: /');
+		if($set==1){
+			header('Location: /');
+		} else {
+			// do nothing
+		}
+		
 	}
 
 	public function setAction(){
@@ -157,7 +181,7 @@ class user extends extender{
 				$form['method'] = '';
 				break;
 		}
-		$this->db->queryData('SELECT * FROM user_form_fields WHERE user_form_id = :formid', array(':formid'=>$form['id']));
+		$this->db->queryData('SELECT * FROM form_field WHERE form_id = :formid', array(':formid'=>$form['id']));
 		$fields = $this->db->return;
 		foreach($fields as $row=>$data){
 			if($data['tag'] == 'select'){
@@ -195,9 +219,12 @@ class user extends extender{
 										(SELECT lastaction FROM user_session WHERE user_id = u.id ORDER BY id DESC LIMIT 1) as lastaction
 										FROM user u INNER JOIN user_profile p ON u.id = p.user_id');
 		$return = $this->db->return;
+		$columns = array();
 		foreach($return as $num=>$row){
 			foreach($row as $column=>$data){
-				$columns[]    = $column;
+				if(!in_array($column, $columns)){
+					$columns[]    = $column;
+				}
 				if($column == 'status'){
 					switch($data){
 						case 1:
@@ -218,14 +245,68 @@ class user extends extender{
 		$this->output['admin']['userlist']['rows']    = $rows;
 	}
 
+	public function activate($hash){
+		$this->db->queryRow('SELECT count(*) as num, username FROM user WHERE hash = :hash AND status = 0', array(':hash'=>$hash));
+		$prev = $this->db->return;
+		if($prev['num'] == 1){
+			$search['hash'] = $hash;
+			$data['status'] = 1;
+			$data['hash'] = '';
+			$this->db->updateTable('user', $search, $data);
+			$this->db->queryRow('SELECT count(*) as num, username FROM user WHERE username = :username AND status = 1', array(':username'=>$prev['username']));
+			if($this->db->return['num'] == 1){
+				$this->output['message']['type'] = 'success';
+				$this->output['message']['text'] = _('User has been activated. You may now login.');
+			}
+		} else {
+			$this->output['message']['type'] = 'error';
+			$this->output['message']['text'] = _('User could not be activated.');
+		}
+		
+		
+		
+	}
+
 	public function create(){
 		if(isset($_POST['action']) && $_POST['action'] == 'createuser'){
 			if($_POST['password-first'] !== $_POST['password-second']){
 				$this->output['message']['type'] = 'error';
 				$this->output['message']['text'] = _('Passwords do not match.');
+			} elseif(	(system::validate($_POST['emailaddress'], 'EMAIL') === TRUE)
+					){
+				$salt = $this->createSalt();
+				$user['username'] = $_POST['username'];
+				$user['password'] = $this->password($_POST['password-first'], $salt);
+				$user['status']   = 0;
+				$user['hash']     = hash('sha256', $salt);
+				$user_id          = $this->db->insertData('user', $user);
+
+				if($user_id !== FALSE AND intval($user_id)){
+					$profile['user_id']   = $user_id;
+					$profile['firstname'] = $_POST['firstname'];
+					$profile['lastname']  = $_POST['lastname'];
+					$profile['gender']    = $_POST['gender'];
+					$profile['email']     = $_POST['emailaddress'];
+					$this->db->insertData('user_profile', $profile);
+					$sec['user_id']      = $user_id;
+					$sec['salt']         = $salt;
+
+					$this->db->insertData('user_secval', $sec);
+					$maildata = $this->mailData('user_activate', 'en');
+					$data     = $maildata['data'];
+					$subject  = $maildata['subject'];
+					$data['link']['href'] = output::getSiteSettings('site_url').'admin/user/activate/'.$user['hash'];
+					$data['introduction'] = str_replace('[[SITE_URL]]',
+														output::getSiteSettings('site_url'),
+														$data['introduction']);
+					$to['to'][] = $profile['email'];
+					
+			        $this->mailTemplate($to, $subject, 'user_activate', $data);
+				} else {
+				}
 			}
 		}
-		$this->output['form']['user-form-create'] = $this->userForm('user-form-create');
+		$this->output['forms']['user-form-create'] = $this->createForm('user-form-create');
 	}
 
 }

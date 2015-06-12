@@ -1,1 +1,1 @@
-{include './adminpanel_user_form.tpl'}
+{include './adminpanel_form.tpl'}

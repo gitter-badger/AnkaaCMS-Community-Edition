@@ -56,9 +56,12 @@ class database{
         $sql = $this->db->prepare($query);
         try{
             $sql->execute($input);
+            return $this->db->lastInsertId();
         } catch(PDOException $e){
             echo $e->getMessage();
+            return FALSE;
         }
+
     }
 
     public function updateTable($table, $search, $data){

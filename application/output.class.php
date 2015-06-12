@@ -28,12 +28,16 @@ class output extends loader{
   }
   
   public function getMessage(){
-    $this->output['message'] = array();
+    $this->outputAssign['message'] = array();
     $this->outputAssign['request'] = implode('/', system::request());
+    $this->outputAssign['forms'] = array();
     foreach($this->outputAssign as $output){
       if(is_array($output)){
         if(array_key_exists('message', $output)){
           $this->outputAssign['messages'][] = $output['message'];
+        }
+        if(array_key_exists('forms', $output)){
+          $this->outputAssign['forms'] = $this->outputAssign['forms'] + $output['forms'];
         }
       }
     }
