@@ -9,6 +9,7 @@
 						"phpmailer/phpmailer"	: 	"~5.2",
 						"smarty/smarty"			:	"~3.1",
 						"monolog/monolog"		:	">=1.13.1",
-						"twbs/bootstrap"		:	">=3.3.4"
+						"twbs/bootstrap"		:	">=3.3.4",
+						"ckeditor/ckeditor"		:	"dev-full/stable"
 						}
 }

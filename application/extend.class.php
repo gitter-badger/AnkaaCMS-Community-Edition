@@ -55,7 +55,7 @@ class extender{
         return $form;
     }
 
-    protected function sendEmail($to, $subject, $body, $attachments=array()){
+    protected function sendEmail($to, $from, $subject, $body, $attachments=array()){
         $mail = new PHPMailer;
         $mail->isSMTP(true);
         $mail->isHTML(true);
@@ -80,8 +80,13 @@ class extender{
         $mail->SMTPSecure = $servers[0]['security'];
         $mail->Port       = $servers[0]['port'];
 
-        $mail->From       = output::getSiteSettings('email_address');
-        $mail->FromName   = output::getSiteSettings('email_name');
+        if(is_array($from)){
+            $mail->From = $from['address'];
+            $mail->From = $from['name'];
+        } else {
+            $mail->From       = output::getSiteSettings('email_address');
+            $mail->FromName   = output::getSiteSettings('email_name');
+        }
         //$mail->addReplyTo('');
 
         if(array_key_exists('bcc', $to)){
@@ -128,7 +133,7 @@ class extender{
         return $set;
 
     }
-    protected function mailTemplate($to = array(), $subject, $template, $data){
+    protected function mailTemplate($to = array(), $subject, $template, $data, $from=''){
         $smarty = new Smarty();
         $smarty->setTemplateDir(system::settings('directory', 'templates'));
         $smarty->setCompileDir(system::settings('directory', 'compile'));
@@ -146,7 +151,7 @@ class extender{
                     $smarty->assign($key, $value);
                 }
                 $body = $smarty->fetch($templatename);
-                if($this->sendEmail($to, $subject, $body) === TRUE){
+                if($this->sendEmail($to, $from, $subject, $body) === TRUE){
                     return TRUE;
                 } else {
                     return FALSE;
