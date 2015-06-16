@@ -81,8 +81,8 @@ class extender{
         $mail->Port       = $servers[0]['port'];
 
         if(is_array($from)){
-            $mail->From = $from['address'];
-            $mail->From = $from['name'];
+            $mail->From       = $from['address'];
+            $mail->FromName   = $from['name'];
         } else {
             $mail->From       = output::getSiteSettings('email_address');
             $mail->FromName   = output::getSiteSettings('email_name');

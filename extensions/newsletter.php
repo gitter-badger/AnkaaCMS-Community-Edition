@@ -75,6 +75,24 @@ class newsletter extends extender{
 	}
 
 	public function createmail(){
+		if(isset($_POST['content']) && system::request()[3] == 'savemail'){
+			print_r($_POST);
+			$data['content'] 		= $_POST['content'];
+			$data['status']  		= 1;
+			$data['name']			= $_POST['subject'];
+			$data['newsletter_id']	= 2;
+			$this->db->queryRow('SELECT address FROM newsletter WHERE id = :id', array(':id'=>$data['newsletter_id']));
+			$from['address'] 		= $this->db->return['address'];
+			$from['name']			= 'A-VISION B.V.';
+			if(isset($_POST['test']) && $_POST['test'] == TRUE){
+				$mailaddress = $_POST['testmail'];
+				$to['to'][]				= $mailaddress;
+				$this->mailTemplate($to, $data['name'], 'avision_newsletter', array('newsletter'=>array('email_content'=>$data['content'])), $from);
+			} else {
+				$this->db->insertData('newsletter_mail', $data);
+			}
+		}
+		$this->output['email_content']  = '';
 		$this->output['email_template'] = '../email_templates/avision_newsletter.tpl';
 	}
 }
