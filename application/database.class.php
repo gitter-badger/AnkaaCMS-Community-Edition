@@ -1,5 +1,13 @@
 <?php
-
+/*
+ * This is de database class which can be used to create a database connection.
+ * This class is extended by the extender and can be called by using the
+ * extender class as extension.
+ * 
+ * @author Dempsey van Wissen
+ * @vendor DienstKoning
+ * 
+ */
 class database{
     
     private $db;
@@ -7,6 +15,8 @@ class database{
     public $fetchMethod = PDO::FETCH_ASSOC;
     public $query;
 
+    // Whenever the database class is called the database connection will be
+    // created instantly
     public function __construct(){
         try{
             $dsn = 'mysql:host='.system::settings('database','hostname').';port='.system::settings('database','port').';dbname='.system::settings('database','database');
@@ -16,7 +26,13 @@ class database{
             //header('Location: /install/');
         }
     }
-    
+    /*
+     * To receive data from the database in multiple rows you can use this
+     * function to query data:
+     * ->queryData('SELECT column FROM table WHERE id = :id', array(':id'=>1));
+     * Data is then put it ->return using the fetchmethod set in ->fetchMethod
+     * variable.
+     */
     public function queryData($query, $values = array()){
         $sql = $this->db->prepare($query);
         $sql->execute($values);
@@ -27,7 +43,6 @@ class database{
         $this->query = $fullQ;
         $this->return = $sql->fetchAll($this->fetchMethod);
     }
-    
     public function queryRow($query, $values = array()){
         $sql = $this->db->prepare($query);
         try{
@@ -42,7 +57,6 @@ class database{
         $this->query = $fullQ;
         $this->return = $sql->fetch($this->fetchMethod);
     }
-    
     public function insertData($table, $data){
         $query   = 'INSERT INTO '.$table.' ';
         $columns = '(';
@@ -63,7 +77,6 @@ class database{
         }
 
     }
-
     public function updateTable($table, $search, $data){
         $query = 'UPDATE '.$table.' SET ';
         $columns = count($data);
@@ -95,7 +108,6 @@ class database{
             echo $e->getMessage();
         } 
     }
-    
     public function removeData($table, $data){
         $query   = 'DELETE FROM '.$table.' WHERE ';
         $columns = count($data);

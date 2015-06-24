@@ -1,6 +1,5 @@
 <?php
 
-
 class user extends extender{
 	public $output;
 	public $loggedin = FALSE;

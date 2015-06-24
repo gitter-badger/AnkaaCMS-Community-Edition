@@ -12,13 +12,12 @@
 class loader{
     protected $cwd;
     public $outputAssign = array();
-    private $templatename = 'default';
     public $settings;
     
     public function __construct(){
         try{
             $this->cwd = $_SERVER['DOCUMENT_ROOT'];
-            require 'libraries'.DIRECTORY_SEPARATOR.'autoload.php';
+            require system::settings('directory','libraries').DIRECTORY_SEPARATOR.'autoload.php';
             spl_autoload_register(array($this, 'extLoader'), true);
             spl_autoload_register(array($this, 'widgetLoader'), true);
             $this->loadExtensions();

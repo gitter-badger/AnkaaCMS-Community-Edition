@@ -19,10 +19,11 @@
     <div class="panel panel-default">
         <div class="panel-heading">Options</div>
         <div class="panel-body text-center">
-            <input type="text" name="newsletter-name" id="subject" class="form-control" placeholder="Subject" />
+            <input type="text" name="newsletter-name" id="subject" class="form-control" placeholder="Subject" /><br />
+            <input title="Leave empty if you want to send immediately" type="text" name="newsletter-date" id="newsletter-date" class="form-control" placeholder="{$newsletter.datetime}" />
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="newsletter-status" />
+                    <input type="checkbox" id="newsletter-status" name="newsletter-status" />
                     Send immediately
                 </label>
             </div>
@@ -118,8 +119,11 @@
                 mail.children[i].attributes.removeNamedItem('title');
             }
         }
-        var content = mail.innerHTML;
-        var data = { 'content' : content }
+        var content  = mail.innerHTML;
+        var subject  = document.getElementById('subject').value;
+        var now      = document.getElementById('newsletter-status').checked;
+        var datetime = document.getElementById('newsletter-date').value;
+        var data = { 'content' : content, 'subject' : subject, 'datetime' : datetime, 'now' : now}
         var req = $.post('/admin/newsletter/createmail/savemail', data, function( ){
         document.getElementById('respons').innerHTML = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + req.statusText ;
         document.getElementById('respons').attributes.removeNamedItem('onClick');

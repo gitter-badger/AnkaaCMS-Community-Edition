@@ -25,11 +25,9 @@ class extender{
         unset($path[0]);
         $this->request    = implode('/',$path);
     }
-
     public function hasRights(){
         return TRUE;
     }
-
     protected function createForm($name = ''){
         $this->db->queryRow('SELECT * FROM form WHERE name = :name', array(':name'=>$name));
         $form = $this->db->return;
@@ -54,7 +52,6 @@ class extender{
         $form['fields'] = $fields;
         return $form;
     }
-
     protected function sendEmail($to, $from, $subject, $body, $attachments=array()){
         $mail = new PHPMailer;
         $mail->isSMTP(true);
@@ -78,16 +75,23 @@ class extender{
         $mail->Username   = $servers[0]['username'];
         $mail->Password   = $servers[0]['password'];
         $mail->SMTPSecure = $servers[0]['security'];
-        $mail->Port       = $servers[0]['port'];
+        $mail->Port       = '25';//$servers[0]['port'];
 
+        if(!empty($servers[0]['username'])){
+            $mail->SMTPAuth = true;
+        } else {
+            $mail->SMTPAuth = false;
+        }
+        
         if(is_array($from)){
             $mail->From       = $from['address'];
-            $mail->FromName   = $from['name'];
+            if(isset($from['name'])){
+                $mail->FromName   = $from['name'];
+            }
         } else {
             $mail->From       = output::getSiteSettings('email_address');
             $mail->FromName   = output::getSiteSettings('email_name');
         }
-        //$mail->addReplyTo('');
 
         if(array_key_exists('bcc', $to)){
             foreach($to['bcc'] as $bcc){
@@ -105,23 +109,39 @@ class extender{
             }
         }
 
+        $dom = new DOMDocument();
+        $dom->loadHTML($body);
+        foreach($dom->getElementsByTagName('img') as $key=>$img){
+            $origin = $img->getAttribute('src');
+            $image = file_get_contents($origin);
+            $name = 'image'.$key;
+            $path = system::settings('directory', 'temp').'image'.$key;
+            $dim = getimagesize($path);
+            file_put_contents($path, $image);
+            $mail->addAttachment($path, $name);
+            $img->setAttribute('src', 'cid:'.$name);
+            $img->setAttribute('width',$dim[0]);
+            $img->setAttribute('height',$dim[1]);
+            $img->setAttribute('style', $img->getAttribute('style').' background-image:url(\''.$origin.'\');');
+            $images2unset[] = $path;
+        }
+        
+        $body = $dom->saveHTML();
+        
         $mail->Subject    = $subject;
         $mail->Body       = $body;
         $mail->AltBody    = '';
-
-        //$mail->addAttachment('');
-        
         
         if(!$mail->send()){
-            echo $mail->ErrorInfo;
             return FALSE;
         } else {
             return TRUE;
         }
-        
+        foreach($images2unset as $img){
+            unset($img);
+        }
         unset($mail);
     }
-
     protected function mailData($name, $language){
         $this->db->queryRow('SELECT data FROM email_template_data WHERE name = :name AND language = :lang',
                             array(':name'=>$name, ':lang'=>$language));
