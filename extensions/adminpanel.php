@@ -30,6 +30,7 @@ class adminpanel extends extender{
 		}
 	}
 
+        
 	private static function getCurrent(){
 		if(isset(system::request()[1])){
 			return system::request()[1];

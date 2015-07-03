@@ -11,7 +11,6 @@
  */
 
 class system{
-    
     private $webdata;
     protected $request;
     private $ini;
@@ -25,11 +24,9 @@ class system{
             }
         }
     }
-    
     public static function redirectDefault(){
         header('Location: /'.output::getSiteSettings('default_module_name').'/'.output::getSiteSettings('default_module_value'));
     }
-
     public static function settings($section, $setting){
         $sCWD = system::server('DOCUMENT_ROOT');
         $aCWD = explode(DIRECTORY_SEPARATOR, $sCWD);
@@ -61,18 +58,15 @@ class system{
             echo $e->getMessage();
         }
     }
-
     public static function request(){
         $request = explode('/',system::server('REQUEST_URI'));
         unset($request[0]);
         $implode = implode('/', $request);
         return explode('/', $implode);
     }
-
     private function loadAdmin(){
            new admin();
     }
-
     public static function getSession($name){
         if(isset($_SESSION[$name])){
             return $_SESSION[$name];
@@ -84,7 +78,6 @@ class system{
         $_SESSION[$name] = $value;
         return $_SESSION[$name];
     }
-
     public static function server($name){
         if(isset($_SERVER[$name])){
             return $_SERVER[$name];
@@ -92,7 +85,6 @@ class system{
             return FALSE;
         }
     }
-
     public static function gender($int){
         if($int == 1){
             return _('Male');
@@ -101,11 +93,9 @@ class system{
             return _('Female');
         }
     }
-
     public static function generateRandomkey($bytes=32){
         return openssl_random_pseudo_bytes($bytes);
     }
-
     public static function crypto($switch=0, $input){
         //SWITCH VAR: 0 = Encrypt & 1 = Decrypt
         switch($switch){
@@ -135,11 +125,9 @@ class system{
                 break;
         }
     }
-
     public static function prePrintArray($arr){
-        echo '<pre>'.print_r($arr, true).'</pre>';
+        echo '<pre class="col-sm-9 col-sm-offset-2 col-md-10 col-md-offset-2 main">'.print_r($arr, true).'</pre>';
     }
-
     public static function validate($value, $type){
         switch($type){
             case "EMAIL":
@@ -156,7 +144,6 @@ class system{
                 break;
         }
     }
-
     public function __destruct(){
         
     }

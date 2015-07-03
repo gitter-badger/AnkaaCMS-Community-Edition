@@ -22,10 +22,10 @@
             <div id="menu">
               {debug}
                 <ul>   
-                {foreach $menu.top as $item}                                                                                         
-                    <li><a href="{$item.href}" title="{$item.title}" class="{$item.class}">{$item.name}</a></li>
-                {/foreach}
-                </ul>
+                    {foreach $menu.top as $key=>$item}{if $key == 0}<li><a href="{$item.href}" title="{$item.title}" class="{$item.class}">{$item.name}</a></li
+                    {elseif $key+1 < count($menu.top)}><li><a href="{$item.href}" title="{$item.title}" class="{$item.class}">{$item.name}</a></li
+                    {else}><li><a href="{$item.href}" title="{$item.title}" class="{$item.class}">{$item.name}</a></li>
+                {/if}{/foreach}</ul>
             </div>
             
         

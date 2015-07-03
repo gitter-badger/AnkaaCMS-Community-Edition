@@ -1,6 +1,5 @@
 <?php
 
-
 class user extends extender{
 	public $output;
 	public $loggedin = FALSE;
@@ -121,7 +120,8 @@ class user extends extender{
 	}
 
 	private function password($pass, $salt){
-		return crypt($pass, '$2y$10$'.$salt);
+		$crypt = crypt($pass, '$2y$10$'.$salt);
+		return $crypt;
 	}
 
 	private function login(){
@@ -156,8 +156,7 @@ class user extends extender{
 			header('Location: /');
 		} else {
 			// do nothing
-		}
-		
+		}	
 	}
 
 	public function setAction(){
@@ -194,14 +193,18 @@ class user extends extender{
 
 	public function loadAdmin(){
 		if($this->hasRights() == TRUE){
-			$this->output['admin']['leftmenu'][0]['name']     = 'create';
-			$this->output['admin']['leftmenu'][0]['function'] = 'create';
+			$this->output['admin']['leftmenu'][0]['name']     = _('Dashboard');
+			$this->output['admin']['leftmenu'][0]['function'] = '';
+			$this->output['admin']['leftmenu'][1]['name']     = _('Create');
+			$this->output['admin']['leftmenu'][1]['function'] = 'create';
+			$this->output['admin']['leftmenu'][2]['name']     = _('Edit');
+			$this->output['admin']['leftmenu'][2]['function'] = 'edit';
 			$this->loadCurrentAdmin();
 		}
 	}
 
 	public function loadCurrentAdmin(){
-		if(isset(system::request()[2])){
+		if(isset(system::request()[2]) && !empty(system::request()[2])){
 			$current_function = system::request()[2];
 		} else {
 			$current_function = 'dashboard';
@@ -213,8 +216,9 @@ class user extends extender{
 		}
 	}
 
-	public function dashboard(){
-		$this->db->queryData('SELECT 	u.id, u.username, u.status, u.created,
+	public function getUserList($get = 'raw'){
+		$this->db->queryData('SELECT 	
+			u.id, u.username, u.status, u.created,
 										p.firstname, p.lastname, p.gender, p.email,
 										(SELECT lastaction FROM user_session WHERE user_id = u.id ORDER BY id DESC LIMIT 1) as lastaction
 										FROM user u INNER JOIN user_profile p ON u.id = p.user_id');
@@ -241,8 +245,18 @@ class user extends extender{
 				}
 			}
 		}
-		$this->output['admin']['userlist']['columns'] = $columns;
-		$this->output['admin']['userlist']['rows']    = $rows;
+		switch($get){
+			case "raw":
+				return $return;
+			case "separate":
+				return array('columns'=>$columns, 'rows'=>$rows);
+		}
+	}
+
+	public function dashboard(){
+		$userlist = $this->getUserlist('separate');
+		$this->output['admin']['userlist']['columns'] = $userlist['columns'];
+		$this->output['admin']['userlist']['rows']    = $userlist['rows'];
 	}
 
 	public function activate($hash){
@@ -261,10 +275,7 @@ class user extends extender{
 		} else {
 			$this->output['message']['type'] = 'error';
 			$this->output['message']['text'] = _('User could not be activated.');
-		}
-		
-		
-		
+		}		
 	}
 
 	public function create(){
@@ -307,6 +318,16 @@ class user extends extender{
 			}
 		}
 		$this->output['forms']['user-form-create'] = $this->createForm('user-form-create');
+	}
+
+	public function edit(){
+		$userlist = $this->getUserList();
+		foreach($userlist as $user){
+			$users[$user['id']] = $user;
+		}
+		$this->output['edit']['list'] = $users;
+
+	//	system::prePrintArray($_POST);
 	}
 
 }
