@@ -12,7 +12,7 @@
           <tr>
             {foreach $row as $key=>$field}
                 {if $key == 'name'}
-                    <td><a href="{$site.settings.site_url}admin/newsletter/view/{$row['id']}">{$field}</a></td>
+                    <td><a href="{$site.settings.site_url}admin/newsletter/viewmails/{$row['id']}">{$field}</a></td>
                 {else}
                     <td>{$field}</td>
                 {/if}

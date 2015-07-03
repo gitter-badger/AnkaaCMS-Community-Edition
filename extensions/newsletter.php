@@ -32,7 +32,6 @@ class newsletter extends extender{
 				$rows[$num][$column] = $data;
 			}
 		}
-                system::prePrintArray($rows);
 		$this->output['list']['columns'] = $columns;
 		$this->output['list']['rows'] = $rows;
 	}
@@ -159,7 +158,7 @@ class newsletter extends extender{
                 }
             }
         }
-        public function view(){
+        public function viewmails(){
             $this->db->queryData('SELECT m.id, m.name, m.planned, n.name as newsletter, m.status send FROM newsletter_mail m INNER JOIN newsletter n ON m.newsletter_id = n.id');
 		$return  = $this->db->return;
 		$columns = array();
@@ -173,6 +172,8 @@ class newsletter extends extender{
                                 $data = _('True');
                             } elseif($data == 0 && $column == 'send') {
                                 $data = _('False');
+                            } elseif($data == 2 && $column == 'send') {
+                                $data = _('Paused');
                             }
                             $rows[$num][$column] = $data;
 			}

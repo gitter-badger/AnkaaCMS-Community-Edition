@@ -8,5 +8,8 @@
 
 ### Requirements
 * PHP 5.4.17 or higher
+ * Imagick
+ * PDO
+ * 
 * MySQL 5 or higher
 * Apache WebServer (or any other compatible webserver that can use .htaccess files)

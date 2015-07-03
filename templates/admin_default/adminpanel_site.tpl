@@ -3,7 +3,7 @@
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
         {foreach $site.admin.leftmenu as $list}
-        <li><a href="{$site.settings.site_url}admin/user/{$list.function}">{$list.name}</a></li>
+        <li><a href="{$site.settings.site_url}admin/site/{$list.function}">{$list.name}</a></li>
         {/foreach}
       </ul>
     </div>
@@ -19,11 +19,19 @@
 					{foreach $site.settings as $name=>$value}
 					<tr>
 						<td>{$name}</td>
-						<td>{$value}</td>
+						<td contentEditable="true">{$value}</td>
 					</tr>
 					{/foreach}
+                                        <tr>
+                                            <td colspan="2">
+                                                <button id="respons" class="btn btn-default btn btn-block" onClick="savesite();">
+                                                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                                                        Save
+                                                </button>
+                                            </td>
+                                        </tr>
 				</tbody>
-			</table>
+                </table>
         </p>
     </div>
   </div>

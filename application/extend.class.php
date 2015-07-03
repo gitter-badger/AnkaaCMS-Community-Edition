@@ -26,6 +26,7 @@ class extender{
         $this->request    = implode('/',$path);
     }
     public function hasRights(){
+        $_SESSION['KCFINDER'] = array('disabled'=>FALSE);
         return TRUE;
     }
     protected function createForm($name = ''){
@@ -109,25 +110,10 @@ class extender{
             }
         }
 
-        $dom = new DOMDocument();
-        $dom->loadHTML($body);
-        foreach($dom->getElementsByTagName('img') as $key=>$img){
-            $origin = $img->getAttribute('src');
-            $image = file_get_contents($origin);
-            $name = 'image'.$key;
-            $path = system::settings('directory', 'temp').'image'.$key;
-            $dim = getimagesize($path);
-            file_put_contents($path, $image);
-            $mail->addAttachment($path, $name);
-            $img->setAttribute('src', 'cid:'.$name);
-            $img->setAttribute('width',$dim[0]);
-            $img->setAttribute('height',$dim[1]);
-            $img->setAttribute('style', $img->getAttribute('style').' background-image:url(\''.$origin.'\');');
-            $images2unset[] = $path;
-        }
         
-        $body = $dom->saveHTML();
         
+        $body = $this->mailImages($body, $mail);
+
         $mail->Subject    = $subject;
         $mail->Body       = $body;
         $mail->AltBody    = '';
@@ -142,6 +128,57 @@ class extender{
         }
         unset($mail);
     }
+
+    protected function mailImages($body, &$mail){
+        $dom = new DOMDocument();
+        $dom->loadHTML($body);
+        
+        // Get each image in the source and process accordingly
+        foreach($dom->getElementsByTagName('img') as $key=>$img){
+            $origin = $img->getAttribute('src');
+            // Check wether full url is given in src attribute.
+            if(!isset(parse_url($origin)['scheme'])){
+                // If not, set url from site
+                $origin = output::getSiteSettings('site_url').$origin;
+            }
+            $image = file_get_contents($origin);
+            $name = 'image'.$key;
+            $path = system::settings('directory', 'temp').'image'.$key;
+            $dim = getimagesize($path);
+            file_put_contents($path, $image);
+            $mail->addAttachment($path, $name);
+            $img->setAttribute('src', 'cid:'.$name);
+            
+            $style = explode(';', $img->getAttribute('style'));
+            // If image itself is larger then asked for, resize using
+            // HTML and CSS for each mailclient.
+            foreach($style as $styling){
+                if(stripos($styling, 'width') !== FALSE){
+                    $w = str_replace('px', '', explode(' ', $styling)[1]);
+                }
+                if(stripos($styling, 'height') !== FALSE){
+                    $h = str_replace('px', '', explode(' ', $styling)[2]);
+                }
+            }
+            if(isset($w) && isset($h)){
+                $dim[0] = $w;
+                $dim[1] = $h;
+            }
+                        
+            if($img->getAttribute('width') <= 0 && $img->getAttribute('height') <= 0){
+                $img->setAttribute('width',$dim[0]);
+                $img->setAttribute('height',$dim[1]);
+            } elseif(isset($w) && isset($h)){
+                $img->setAttribute('width',$dim[0]);
+                $img->setAttribute('height',$dim[1]);
+            }
+            $img->setAttribute('style', $img->getAttribute('style').' background-size: contain; background-image:url(\''.$origin.'\');');
+            // remove image from tmp folder
+            $images2unset[] = $path;
+        }
+        return $dom->saveHTML();       
+    }
+    
     protected function mailData($name, $language){
         $this->db->queryRow('SELECT data FROM email_template_data WHERE name = :name AND language = :lang',
                             array(':name'=>$name, ':lang'=>$language));

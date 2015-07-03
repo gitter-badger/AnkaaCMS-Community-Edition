@@ -62,29 +62,6 @@
     function sendtest(){
         var mail = document.getElementById('newsletter-content');
         var l = mail.children.length;
-        for(i=0;i<l;i++){
-            if(mail.children[i].attributes.contenteditable){
-                mail.children[i].attributes.removeNamedItem('contenteditable');
-            }
-            if(mail.children[i].attributes.id){
-                mail.children[i].attributes.removeNamedItem('id');
-            }
-            if(mail.children[i].attributes.class){
-                mail.children[i].attributes.removeNamedItem('class');
-            }
-            if(mail.children[i].attributes.spellcheck){
-                mail.children[i].attributes.removeNamedItem('spellcheck');
-            }
-            if(mail.children[i].attributes.role){
-                mail.children[i].attributes.removeNamedItem('role');
-            }
-            if(mail.children[i].attributes.tabindex){
-                mail.children[i].attributes.removeNamedItem('tabindex');
-            }
-            if(mail.children[i].attributes.title){
-                mail.children[i].attributes.removeNamedItem('title');
-            }
-        }
         var content  = mail.innerHTML;
         var subject  = document.getElementById('subject').value;
         var testmail = document.getElementById('testmail').value;

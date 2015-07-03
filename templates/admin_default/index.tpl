@@ -7,7 +7,6 @@
     <base href="{$site.settings.site_url}admin/">
     <!-- Bootstrap -->
     <link href="../libraries/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../libraries/ckeditor/ckeditor/ckeditor.js"></script>
     
     <style>
 
