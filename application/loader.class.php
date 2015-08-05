@@ -13,11 +13,12 @@ class loader{
     protected $cwd;
     public $outputAssign = array();
     public $settings;
-    
+
     public function __construct(){
         try{
             $this->cwd = $_SERVER['DOCUMENT_ROOT'];
             require system::settings('directory','libraries').DIRECTORY_SEPARATOR.'autoload.php';
+            spl_autoload_register(array($this, 'loadInterface'), true);
             spl_autoload_register(array($this, 'extLoader'), true);
             spl_autoload_register(array($this, 'widgetLoader'), true);
             $this->loadExtensions();
@@ -54,7 +55,15 @@ class loader{
             $this->output($data['folder'], $$data['folder']->output);
         }
     }
-    
+
+    private function loadInterface($interface){
+      $filepath = $this->cwd.'/interfaces/'.$interface.'.php';
+      if(file_exists($filepath)){
+        include($filepath);
+        spl_autoload($interface);
+      }
+    }
+
     private function getExtensions($type=0){
         $db = new database();
         $db->fetchMethod = PDO::FETCH_ASSOC;

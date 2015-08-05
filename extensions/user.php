@@ -14,7 +14,7 @@ class user extends extender{
 				if(isset(system::request()[3])){
 					$this->activate(system::request()[3]);
 				}
-				
+
 			}
 		}
 		$this->output = array('login'=>array(), 'message'=>'', 'loggedin'=>$this->loggedin);
@@ -56,6 +56,7 @@ class user extends extender{
 		if($this->loggedin == TRUE && $current == 'user'){
 			$this->loadAdmin();
 		}
+		new permissions();
 	}
 
 	public function checkUser(){
@@ -156,7 +157,7 @@ class user extends extender{
 			header('Location: /');
 		} else {
 			// do nothing
-		}	
+		}
 	}
 
 	public function setAction(){
@@ -217,7 +218,7 @@ class user extends extender{
 	}
 
 	public function getUserList($get = 'raw'){
-		$this->db->queryData('SELECT 	
+		$this->db->queryData('SELECT
 			u.id, u.username, u.status, u.created,
 										p.firstname, p.lastname, p.gender, p.email,
 										(SELECT lastaction FROM user_session WHERE user_id = u.id ORDER BY id DESC LIMIT 1) as lastaction
@@ -275,7 +276,7 @@ class user extends extender{
 		} else {
 			$this->output['message']['type'] = 'error';
 			$this->output['message']['text'] = _('User could not be activated.');
-		}		
+		}
 	}
 
 	public function create(){
@@ -311,7 +312,7 @@ class user extends extender{
 														output::getSiteSettings('site_url'),
 														$data['introduction']);
 					$to['to'][] = $profile['email'];
-					
+
 			        $this->mailTemplate($to, $subject, 'user_activate', $data);
 				} else {
 				}
@@ -327,7 +328,6 @@ class user extends extender{
 		}
 		$this->output['edit']['list'] = $users;
 
-	//	system::prePrintArray($_POST);
 	}
 
 }

@@ -128,7 +128,6 @@ class extender{
         }
         unset($mail);
     }
-
     protected function mailImages($body, &$mail){
         $dom = new DOMDocument();
         $dom->loadHTML($body);
@@ -178,7 +177,6 @@ class extender{
         }
         return $dom->saveHTML();       
     }
-    
     protected function mailData($name, $language){
         $this->db->queryRow('SELECT data FROM email_template_data WHERE name = :name AND language = :lang',
                             array(':name'=>$name, ':lang'=>$language));
