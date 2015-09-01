@@ -3,11 +3,13 @@
 <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{$site.settings.site_url}templates/admin_default/favicon.ico" rel="icon" type="image/x-icon" />
     <title>{$site.settings.site_name}</title>
     <base href="{$site.settings.site_url}admin/">
     <!-- Bootstrap -->
     <link href="../libraries/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="../libraries/bootflat/css/bootflat.css">
+
     <style>
 
 
@@ -215,5 +217,9 @@ body {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../libraries/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- BOOTFLAT Extension on Bootstrap -->
+    <script src="../libraries/bootflat/js/icheck.min.js"></script>
+    <script src="../libraries/bootflat/js/jquery.fs.selecter.min.js"></script>
+    <script src="../libraries/bootflat/js/jquery.fs.stepper.min.js"></script>
 </body>
 </html>

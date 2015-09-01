@@ -15,7 +15,7 @@ class system{
     protected $request;
     private $ini;
     private $db;
-    
+
     public function __construct(){
         $methods = get_class_methods($this);
         foreach($methods as $method){
@@ -35,7 +35,7 @@ class system{
             if(file_exists($path.DIRECTORY_SEPARATOR.'webdata')){
                 $webdata = $path.DIRECTORY_SEPARATOR.'webdata';
                 break;
-            } else { 
+            } else {
                 array_pop($aCWD);
             }
         }
@@ -49,7 +49,7 @@ class system{
                 } else {
                     return '';
                 }
-                
+
             } else {
                 throw new Exception(_('No config file present'));
             }
@@ -145,6 +145,6 @@ class system{
         }
     }
     public function __destruct(){
-        
+
     }
 }

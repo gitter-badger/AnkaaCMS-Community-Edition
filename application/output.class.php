@@ -1,7 +1,7 @@
 <?php
 
 class output extends loader{
-  
+
   public function __construct(){
     parent::__construct();
     $this->db = new database;
@@ -26,7 +26,7 @@ class output extends loader{
     $this->getMessage();
     $this->output = new $class($this->outputAssign);
   }
-  
+
   public function getMessage(){
     $this->outputAssign['message'] = array();
     $this->outputAssign['request'] = implode('/', system::request());
@@ -69,8 +69,10 @@ class output extends loader{
         unset($path[0]);
         $request    = implode('/',$path);
         $aRequest   = explode('/', $request);
-        
-        $this->loadType();
+
+        if(isset($this->db)){
+          $this->loadType();
+        }
             /*
             case "json":
                 header('Cache-Control: no-cache, must-revalidate');
@@ -97,7 +99,7 @@ class output extends loader{
                 break;
             */
   }
- 
+
 
 }
 

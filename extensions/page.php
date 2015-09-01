@@ -11,7 +11,7 @@
 class page extends extender{
     private $modules;
     public $output;
-    
+
     public function __construct(){
         parent::__construct();
         $this->db = new database();
@@ -63,7 +63,7 @@ class page extends extender{
                     $this->output[$block] = $return;
                 }
             }
-            
+
         }
     }
     private function getModules(){
@@ -75,34 +75,34 @@ class page extends extender{
             include_once($this->cwd.'/modules/'.$classname.'/index.php');
             spl_autoload($classname);
         }
-    }  
+    }
     public function loadAdmin(){
-		if($this->hasRights() == TRUE){
-			$this->output['leftmenu'][0]['name']     = _('Dashboard');
-			$this->output['leftmenu'][0]['function'] = '';
-			$this->output['leftmenu'][1]['name']     = _('Create Newsletter');
-			$this->output['leftmenu'][1]['function'] = 'create';
-			$this->output['leftmenu'][2]['name']     = _('Edit Newsletter');
-			$this->output['leftmenu'][2]['function'] = 'edit';
-			$this->output['leftmenu'][3]['name']     = _('Create Mail');
-			$this->output['leftmenu'][3]['function'] = 'createmail';
-			$this->output['leftmenu'][4]['name']     = _('Edit unsend Mail');
-			$this->output['leftmenu'][4]['function'] = 'editmail';
-			$this->loadCurrentAdmin();
-		}
-	}
+  		if($this->hasRights() == TRUE){
+  			$this->output['leftmenu'][0]['name']     = _('Dashboard');
+  			$this->output['leftmenu'][0]['function'] = '';
+  			$this->output['leftmenu'][1]['name']     = _('Create Newsletter');
+  			$this->output['leftmenu'][1]['function'] = 'create';
+  			$this->output['leftmenu'][2]['name']     = _('Edit Newsletter');
+  			$this->output['leftmenu'][2]['function'] = 'edit';
+  			$this->output['leftmenu'][3]['name']     = _('Create Mail');
+  			$this->output['leftmenu'][3]['function'] = 'createmail';
+  			$this->output['leftmenu'][4]['name']     = _('Edit unsend Mail');
+  			$this->output['leftmenu'][4]['function'] = 'editmail';
+  			$this->loadCurrentAdmin();
+  		}
+	  }
     public function loadCurrentAdmin(){
-		if(isset(system::request()[2]) && !empty(system::request()[2])){
-			$current_function = system::request()[2];
-		} else {
-			$current_function = 'dashboard';
-		}
-		$this->output['current_template'] = './adminpanel_page_'.$current_function.'.tpl';
-		$this->output['current_function'] = $current_function;
-		if(method_exists($this, $current_function)){
-			$this->$current_function();
-		}
-	}
+  		if(isset(system::request()[2]) && !empty(system::request()[2])){
+  			$current_function = system::request()[2];
+  		} else {
+  			$current_function = 'dashboard';
+  		}
+  		$this->output['current_template'] = './adminpanel_page_'.$current_function.'.tpl';
+  		$this->output['current_function'] = $current_function;
+  		if(method_exists($this, $current_function)){
+  			$this->$current_function();
+  		}
+  	}
     public function dashboard(){
         $this->db->queryData('	SELECT 
                                         *,
@@ -131,5 +131,5 @@ class page extends extender{
         $this->output['list']['columns'] = $columns;
         $this->output['list']['rows'] = $rows;
     }
-    
+
 }
