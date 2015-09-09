@@ -1,5 +1,7 @@
 # AnkaaCMS-Community-Edition
 
+[![Join the chat at https://gitter.im/DienstKoning/AnkaaCMS-Community-Edition](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/DienstKoning/AnkaaCMS-Community-Edition?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ### Libraries used
 * PHPMailer - https://github.com/PHPMailer/PHPMailer
 * Smarty Template Engine v3 - http://www.smarty.net/
